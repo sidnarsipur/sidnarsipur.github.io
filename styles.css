@@ -1,0 +1,22 @@
+body {
+  background-color: #e8d5bb ;
+}
+#name-title{
+
+  font-size: 300%;
+  text-align: center;
+  font-family:"Palatino Linotype", serif ;
+}
+
+#external-links{
+  font-family: serif;
+  font-weight: lighter;
+  color: #ba5c52 ;
+  font-size:120%;
+  text-align: center;
+
+}
+
+a:hover{
+  color: #0b9bda
+}
