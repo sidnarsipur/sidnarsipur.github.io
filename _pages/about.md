@@ -9,8 +9,6 @@ profile:
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p><a href="tel:5854108848">585-410-8848</a></p>
-    <p><a href="mailto:snarsipu@u.rochester.edu">snarsipu@u.rochester.edu</a></p>
 
 news: false # includes a list of news items
 selected_papers: false # includes a list of papers marked as "selected={true}"
@@ -24,3 +22,5 @@ I spent Summer 2023 interning for the software engineering team at LiquiDonate, 
 I'm currently a research assistant at the URCS Bear Lab under Yukang Yan, working on automatically generating unified Mixed Reality (MR) interfaces for multiple environments at once. I'm been awarded the Schwartz Discover Grant to support my research.
 
 My main interests and areas of passion are in Computer Vision, Computer Systems/Architecture, and Mixed Reality. I'm currently for internship oppurtunities starting Summer 2025, with a focus on software engineering roles, particularly backend, systems, or full-stack positions.
+
+Contact: **[snarsipu@u.rochester.edu](mailto:snarsipu@u.rochester.edu)**
