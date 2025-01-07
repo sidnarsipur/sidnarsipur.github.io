@@ -1,5 +1,8 @@
 ---
 layout: none
+title: resume
+nav: true
+nav_order: 3
 permalink: /resume/
 ---
 
