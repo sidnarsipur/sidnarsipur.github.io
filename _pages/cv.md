@@ -1,11 +1,7 @@
 ---
-layout: cv
+layout: none
 permalink: /resume/
-title: resume
-nav: true
-nav_order: 3
-cv_pdf: Siddharth_Narsipur_Resume.pdf # you can also use external links here
-description:
-toc:
-  sidebar: left
 ---
+
+<meta http-equiv="refresh" content="0; url=https://sidnarsipur.github.io/assets/pdf/Siddharth_Narsipur_Resume.pdf">
+If you are not redirected automatically, <a href="https://sidnarsipur.github.io/assets/pdf/Siddharth_Narsipur_Resume.pdf">click here</a>.
