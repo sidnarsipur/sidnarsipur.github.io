@@ -421,6 +421,11 @@ ninja.data = [{
           description: "Block unauthorized web crawlers",
           section: "Projects",handler: () => {
               window.location.href = "/projects/7_project/";
+            },},{id: "projects-group4good",
+          title: 'Group4Good',
+          description: "Find common interests among large groups with smart text embeddings",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/8_project/";
             },},{
         id: 'social-github',
         title: 'GitHub',
