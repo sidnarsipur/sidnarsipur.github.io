@@ -2,6 +2,7 @@
 layout: page
 title: TextGen
 description: Normal/Roughness map generation, conditioned only on an input photograph.
+category: cs
 img:
 importance: 1
 ---
