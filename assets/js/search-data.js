@@ -411,6 +411,11 @@ ninja.data = [{
           description: "",
           section: "Projects",handler: () => {
               window.location.href = "/projects/5_project/";
+            },},{id: "projects-the-indian-opinion-podcast",
+          title: 'The Indian Opinion Podcast',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/6_project/";
             },},{
         id: 'social-github',
         title: 'GitHub',
