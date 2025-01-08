@@ -3,7 +3,7 @@ layout: page
 title: AR/VR Research
 description:
 category: cs
-img:
+img: assets/img/Poster.png
 importance: 3
 ---
 
