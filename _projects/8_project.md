@@ -7,7 +7,7 @@ img:
 importance: 5
 ---
 
-[Github](https://github.com/sidnarsipur/Group4Good)
+[Github](https://github.com/sidnarsipur/GroupForGood)
 
 Families, sororities, clubs, and other groups often want to donate together for a good cause but usually end up supporting one chosen by only a few members. What if we could securely analyze your interests, find common ground among a larger group, and magically match you with a charity that resonates with everyone?
 
