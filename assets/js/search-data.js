@@ -401,6 +401,11 @@ ninja.data = [{
           description: "",
           section: "Projects",handler: () => {
               window.location.href = "/projects/3_project/";
+            },},{id: "projects-dazed-amp-confused",
+          title: 'Dazed &amp;amp; Confused',
+          description: "Twine Game",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/4_project/";
             },},{
         id: 'social-github',
         title: 'GitHub',
