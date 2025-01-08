@@ -2,6 +2,7 @@
 layout: page
 title: Netherite
 description: AI-powered Github for notes
+category: cs
 img:
 importance: 2
 ---
