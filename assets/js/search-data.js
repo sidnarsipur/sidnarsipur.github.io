@@ -396,6 +396,11 @@ ninja.data = [{
           description: "AI-powered Github for notes",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_project/";
+            },},{id: "projects-ar-vr-research",
+          title: 'AR/VR Research',
+          description: "",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_project/";
             },},{
         id: 'social-github',
         title: 'GitHub',
