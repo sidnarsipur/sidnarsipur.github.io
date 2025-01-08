@@ -416,6 +416,11 @@ ninja.data = [{
           description: "",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_project/";
+            },},{id: "projects-botblock",
+          title: 'BotBlock',
+          description: "Block unauthorized web crawlers",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/7_project/";
             },},{
         id: 'social-github',
         title: 'GitHub',
