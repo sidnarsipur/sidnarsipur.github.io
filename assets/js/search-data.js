@@ -416,8 +416,8 @@ ninja.data = [{
           description: "",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_project/";
-            },},{id: "projects-botblock",
-          title: 'BotBlock',
+            },},{id: "projects-robots-txt-generator",
+          title: 'Robots.txt generator',
           description: "Block unauthorized web crawlers",
           section: "Projects",handler: () => {
               window.location.href = "/projects/7_project/";
