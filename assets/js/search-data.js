@@ -386,9 +386,9 @@ ninja.data = [{
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
-          section: "News",},{id: "projects-textgen",
-          title: 'TextGen',
-          description: "Normal/Roughness map generation, conditioned only on an input photograph.",
+          section: "News",},{id: "projects-pbr-texture-generation",
+          title: 'PBR Texture Generation',
+          description: "Generate texture maps from photographs",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
             },},{id: "projects-netherite",
