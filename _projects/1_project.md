@@ -1,7 +1,7 @@
 ---
 layout: page
-title: TextGen
-description: Normal/Roughness map generation, conditioned only on an input photograph.
+title: PBR Texture Generation
+description: Generate texture maps from photographs
 category: cs
 img: assets/img/TextGen2.png
 importance: 1

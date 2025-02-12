@@ -1,6 +1,6 @@
 ---
 layout: page
-title: BotBlock
+title: Robots.txt generator
 description: Block unauthorized web crawlers
 category: cs
 img:
