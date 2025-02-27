@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Compiler Optimizations: Part 1
+title: Compiler Optimizations - Part 1
 date: 2025-02-28 15:09:00
 description:
 tags: compiler, cs
