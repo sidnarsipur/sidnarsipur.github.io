@@ -30,9 +30,9 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/resume/";
           },
-        },{id: "post-intro-to-compilers-optimizations-1",
+        },{id: "post-intro-to-compiler-optimizations-1",
       
-        title: "intro to compilers optimizations (1)",
+        title: "intro to compiler optimizations (1)",
       
       description: "",
       section: "Posts",
