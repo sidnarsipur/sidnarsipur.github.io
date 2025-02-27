@@ -1,0 +1,195 @@
+---
+layout: post
+title: Compiler Optimizations: Part 1
+date: 2025-02-28 15:09:00
+description:
+tags: compiler, cs
+categories: posts
+featured: true
+---
+
+Compilers can be considered the magicians of programming - they transform our ugly, slow source code into efficient & speedy machine code. 
+
+For most of the [30 million software](https://evansdata.com/reports/viewRelease.php?reportID=9) developers in the world, the compiler is a black box - just another command to type out in the terminal. Many newer programmers will have never even typed out ``gcc`` or ``javac`` in the terminal and just press the ▶️ button in their IDEs.
+
+Understanding the compiler can help you write better code, and develop appreciate a fresh outlook on how code works. It's not magic, just mechanical!
+
+# Parsing & Lexing
+
+Setting up the parse tree, according to me, is the boring part of compilation! Most of the interesting analysis and transformation happens after the creation of an [Abstract Syntax Tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+
+This blog will mainly focus on the middle end of the compiler.
+
+<br>
+
+<div align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Abstract_syntax_tree_for_Euclidean_algorithm.svg/1920px-Abstract_syntax_tree_for_Euclidean_algorithm.svg.png" alt="Abstract syntax tree for Euclidean algorithm" width="50%" />
+    <h6>Credit: Wikimedia Commons</h6>
+</div>
+
+<br>
+
+The AST is the first of many structures that represent source code as a graph. Representing code as a graph is a really powerful tool that will let us reason about control flow and the state of our program (more on this later).
+
+# Intermediate Representation
+
+Once the AST has been created, it is lowered into an intermediate representation (IR). There are multiple IRs used in a compiler, with each offering different benefits and drawbacks for analysis.
+
+Using an IR allows multiple programming languages to use the same compiler for middle end optimizations and code generation, or combine different front ends and back ends together.
+
+<br>
+
+<div align="center">
+    <img src="https://liucs.net/cs664s16/compiler-front-back.png" alt="Abstract syntax tree for Euclidean algorithm" width="50%" />
+    <h6>Credit: https://liucs.net/cs664s16/ir.html</h6>
+</div>
+
+<br>
+
+IRs simplify code analysis by adding information about control flow or variable mutation. IRs are also linear and eliminate the need to recursively visit an AST (flattening).
+
+In this blog we'll look at two popular IRs - three address code and control flow graphs.
+
+# Three Address Code
+
+The IR in compilers tries to maintain simplicity in their instructions, and does not support complex data structures or control flow like source code does. 
+
+One of the most popular IRs is three address code, where each instruction is an operation upon two operands.
+
+```
+z = x op y (General form)
+
+z = x + 3
+z = x * 3
+```
+
+Three address code in real compilers may look something like this:
+
+```
+%z = add i32 %x, 3
+```
+
+Longer expressions
+
+```
+z = ((x * y) + (2 * z)) / (1+n)
+```
+
+can also easily be translated into three address form by introducing temporaries:
+
+```
+t0 = x * y
+t1 = 2 + z
+t2 = t0 + t1
+t3 = 1 + n
+z = t2 / t3
+```
+
+The process of generating three address code from an AST is mechanical and can be done through a tree traversal. 
+
+What about branching and conditional flow? By only introducing goto and label statements, we can handle for loops, if statements, etc.
+
+```
+if(x > 10){
+    y = 10
+} else {
+    y = 5
+}
+```
+
+becomes
+
+```
+start:
+    t0 = x > 10
+    if t0 == 0: goto else
+    y = 10
+    goto exit
+else:
+    y = 5
+    goto exit
+exit:
+```
+For loops like
+
+```
+for(int i = 0; i <= 5; i++){
+    x = x + 1;
+}
+
+y = 10
+
+```
+becomes
+
+```
+i = 0
+
+condition:
+    t0 = i <= 5
+    if t0 == 0: goto exit
+    goto body
+
+body:
+    x = x + 1
+    i = i + 1
+    goto condition
+
+exit:
+    y = 10
+```
+
+# Control Flow Graphs
+
+Control Flow Graphs (CFGs) are the most common form of IRs used in analysis. 
+
+<div align="center">
+    <img src="https://www.cs.toronto.edu/~david/course-notes/csc110-111/17-graphs/images/one-iteration-simple.svg" alt="Abstract syntax tree for Euclidean algorithm" width="50%" />
+    <h6>Credit: https://www.cs.toronto.edu/~david</h6>
+</div>
+
+
+Each node is a CFG is a *basic block*, the smallest unit of linear code without branches in or out (single entry, single exit). 
+
+For example,
+
+```
+if(x > 10){
+    y = 10
+    z = 25
+} else{
+    y = 20
+    z = 40
+}
+
+l = 100
+```
+
+consists of three basic blocks:
+
+```
+BB001:
+    t0 = x > 10
+    if t0 == 0: goto BB002
+    y = 10
+    z = 25
+    goto EXIT
+
+BB002:
+    y = 20
+    z = 40
+    goto BB003
+
+BB003:
+    l = 100
+```
+
+BB003 in the above example is called a *join node*, a node with more than incoming edge. Join nodes are harder to reason about, as they indicate that the program could have taken multiple different routes to get there. Some IRs like [SSA form](https://en.wikipedia.org/wiki/Static_single-assignment_form) make analysis on join nodes easier to perform. 
+
+Edges in CFGs indicate transfers in the flow of execution and can help us reason about the state of a program at a particular point. Reasoning about our code as a graph leads to dataflow analysis, which I will discuss in the next blog post.
+
+Thank you for reading!
+
+Discalimer: I am not an expert in compilers, and just want to share some cool ideas I've been learning. If I've made an error somewhere, [let me know](mailto:sid.narsipur@gmail.com).
+
+
