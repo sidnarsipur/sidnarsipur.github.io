@@ -30,7 +30,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/resume/";
           },
-        },{id: "post-a-post-with-image-galleries",
+        },{id: "post-a-post-with-twitter",
+      
+        title: "a post with twitter",
+      
+      description: "an example of a blog post with twitter",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/compiler/";
+        
+      },
+    },{id: "post-a-post-with-image-galleries",
       
         title: "a post with image galleries",
       
