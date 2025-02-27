@@ -85,7 +85,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 
 blog_name: Blog # blog_name will be displayed in your blog page
 blog_description:
-permalink: /blog/
+permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
 # Pagination
@@ -247,14 +247,18 @@ terser:
 # -----------------------------------------------------------------------------
 
 jekyll-archives:
-  enabled: [tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
+  enabled: [year, tags] # enables year, tag and category archives (remove if you need to disable one of them).
   layouts:
+    year: archive-year
     tag: archive-tag
     category: archive-category
   permalinks:
+    year: "/blog/:year/"
+    tag: "/blog/tag/:name/"
+    category: "/blog/category/:name/"
 
 display_tags: ["cs"] # these tags will be displayed on the front page of your blog
-display_categories: ["posts"] # these categories will be displayed on the front page of your blog
+display_categories: [] # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
