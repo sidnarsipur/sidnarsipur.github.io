@@ -1,4 +1,109 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://sidnarsipur.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://sidnarsipur.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-02-28T04:10:23+00:00</updated><id>https://sidnarsipur.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">intro to compiler optimizations (1)</title><link href="https://sidnarsipur.github.io/blog/2025/compiler/" rel="alternate" type="text/html" title="intro to compiler optimizations (1)"/><published>2025-02-26T23:12:00+00:00</published><updated>2025-02-26T23:12:00+00:00</updated><id>https://sidnarsipur.github.io/blog/2025/compiler</id><content type="html" xml:base="https://sidnarsipur.github.io/blog/2025/compiler/"><![CDATA[<p>For most of the <a href="https://evansdata.com/reports/viewRelease.php?reportID=9">30 million</a> software developers in the world, the compiler is a black box - just another command to type out in the terminal. Many new programmers would have never even typed out <code class="language-plaintext highlighter-rouge">gcc</code> or <code class="language-plaintext highlighter-rouge">javac</code> in the terminal and just press the ▶️ button in their IDEs.</p> <p>Understanding how a compiler works can help you write better code, and develop a fresh outlook on software engineering. Nothing is just magic, it’s just mechanical!</p> <h1 id="parsing--lexing">Parsing &amp; Lexing</h1> <p>Setting up the parse tree is the boring part of compilation, but most intro courses only focus on lexing and parsing. Most of the interesting analysis and transformation on source code happens after the creation of an <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">Abstract Syntax Tree (AST)</a>.</p> <p><br/></p> <div align="center"> <img src="https://raw.githubusercontent.com/Codecademy/docs/main/media/abstract-syntax-tree.png" alt="Abstract syntax tree for Euclidean algorithm" width="50%"/> <h6>Credit: Wikimedia Commons</h6> </div> <p><br/></p> <p>The AST is the first of many structures that represent source code as a graph. Representing our code as a graph is a really powerful tool that will help us reason about control flow and the state of our program using formal theorems and properties of graphs (more on this later).</p> <p>This blog will mainly focus on the middle end of the compiler - the part after the AST has been created.</p> <h1 id="intermediate-representation">Intermediate Representation</h1> <p>Once the AST has been created, it is usually lowered into an intermediate representation (IR). There are multiple IRs used in a compiler, with each offering different benefits and drawbacks for analysis.</p> <p>Using an IR allows multiple programming languages to share the same compiler for middle end optimizations and code generation, or combine different front ends and back ends together.</p> <p><br/></p> <div align="center"> <img src="https://liucs.net/cs664s16/compiler-front-back.png" alt="Abstract syntax tree for Euclidean algorithm" width="50%"/> <h6>Credit: https://liucs.net/cs664s16/ir.html</h6> </div> <p><br/></p> <p>IRs simplify code analysis by converting an AST into a linear format, eliminating the need for recursive tree traversal. They may also additional extra information about variable mutation and control flow to help with analysis.</p> <p>In this post we’ll look at two popular IRs - three address code and control flow graphs.</p> <h1 id="three-address-code">Three Address Code</h1> <p>IRs in compilers try to keep simple, and do not support complex data structures or control flow like source code does. One of the most popular IRs is three address code, where each instruction is just an operation upon two operands.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>z = x op y (General form)
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://sidnarsipur.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://sidnarsipur.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-02-28T08:33:57+00:00</updated><id>https://sidnarsipur.github.io/feed.xml</id><title type="html">blank</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">intro to compiler optimizations (2)</title><link href="https://sidnarsipur.github.io/blog/2025/compiler2/" rel="alternate" type="text/html" title="intro to compiler optimizations (2)"/><published>2025-02-28T01:12:00+00:00</published><updated>2025-02-28T01:12:00+00:00</updated><id>https://sidnarsipur.github.io/blog/2025/compiler2</id><content type="html" xml:base="https://sidnarsipur.github.io/blog/2025/compiler2/"><![CDATA[<p>Before we move onto covering dataflow analysis, I thought it would interesting to cover an example of such an analysis to motivate its discussion.</p> <h1 id="live-variable-analysis">Live Variable Analysis</h1> <p>A Control flow graph represents our source code in a data structure that allows us to analyze properties of our program very easily.</p> <p>For example, consider the C program that calculates the minimum of two numbers:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int minimum(int x, int y) {
+    int r = -1;
+  
+    if(x &gt; y)
+      r = y;
+    else
+      r = x;
+  
+    return r;
+}
+</code></pre></div></div> <p>In three-address form:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    r = -1
+    t0 = x &gt; y
+    if (t0 == 0)  goto L1
+    r = y
+    goto L0
+
+L1:
+    r = x
+    goto L0
+
+L0:
+    return r
+
+</code></pre></div></div> <p>In CFG form:</p> <p><br/></p> <div align="center"> <img src="https://imgur.com/5j8LsJy.png" alt="CFG for minimum code" width="30%"/> </div> <p><br/></p> <p>At the return statement, what value of r is “alive”? Informally, a variable is alive after its definition upto a point in the program where it is re-defined on all possible paths.</p> <p>In the CFG above, we can see that <code class="language-plaintext highlighter-rouge">r = -1</code> is no longer alive at the return statement as all edges coming into the return statement have a write to r.</p> <p>Doing live variable analysis helps us remove unnecessary statements from the program while maintaining correctness. In this example, the <code class="language-plaintext highlighter-rouge">r = -1</code> assignment can be safely removed.</p> <p>How do we calculate live variables for more complex programs?</p> <p>At the level of a basic block, we need to define two sets: <code class="language-plaintext highlighter-rouge">DEF</code> and <code class="language-plaintext highlighter-rouge">USE</code>.</p> <p><code class="language-plaintext highlighter-rouge">DEF</code> is the set of variables written to in the block. <code class="language-plaintext highlighter-rouge">USE</code> is the set of variables read from in the block.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BB001:
+    x = 10
+    y = z + 10
+
+DEF(BB001) = {x, y}
+USE(BB001) = {z}
+
+
+BB002:
+    a = 10 + j
+    j = 25 + x
+
+DEF(BB002) = {a, j}
+USE(BB002) = {j, x}
+</code></pre></div></div> <p>Our goal is to calculate <code class="language-plaintext highlighter-rouge">IN</code> and <code class="language-plaintext highlighter-rouge">OUT</code>, the set of variables that are alive entering and leaving a basic block.</p> <p>Calculating <code class="language-plaintext highlighter-rouge">OUT</code> is easy - it’s just the union of all the <code class="language-plaintext highlighter-rouge">IN</code> sets in b’s successors.</p> <p><code class="language-plaintext highlighter-rouge">OUT(b) = ∪ (IN(s) for s in SUCC(b))</code></p> <p>Why don’t we define it the other way around? Take a moment and think about what <em>direction</em> facts flow in. Live variable analysis asks whether our variable is alive in the paths <em>after</em> ours, i.e., subsequent instructions. This means that facts flow from lower nodes to higher nodes, or backwards. Therefore, <code class="language-plaintext highlighter-rouge">OUT</code> is defined as a union of successor <code class="language-plaintext highlighter-rouge">IN</code> sets.</p> <p>Now let’s try and find <code class="language-plaintext highlighter-rouge">IN(b)</code></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BB009:
+    x = 10 + y
+</code></pre></div></div> <p>In the above example, <code class="language-plaintext highlighter-rouge">y</code> is clearly in the <code class="language-plaintext highlighter-rouge">USE</code> set of <code class="language-plaintext highlighter-rouge">BB009</code>, but it hasn’t been defined in the same block. Therefore, <code class="language-plaintext highlighter-rouge">y</code> had to have been defined earlier in the program and has to be alive <em>entering</em> the block.</p> <p>That’s the first part of the formula: <code class="language-plaintext highlighter-rouge">IN(b) = USE(b)</code></p> <p>Vice versa, if a variable is alive in subsequent blocks without a definition, it has to been alive in our block (remember that <code class="language-plaintext highlighter-rouge">OUT(b)</code> is defined on successors). <code class="language-plaintext highlighter-rouge">IN(b) = USE(b) ∪ OUT(b)</code></p> <p>However, there is a problem in the equation. If we re-define a variable within our blokck, it is no longer alive entering the block; we kill its previous definition. This completes our equation: <code class="language-plaintext highlighter-rouge">IN(b) = USE(b) ∪ (OUT(b) - DEF(b))</code></p> <p>If you think of yourself as a block, the variable is alive coming in if I use it or any of my succesors use it, unless I define it myself.</p> <p>Wait? Aren’t <code class="language-plaintext highlighter-rouge">IN</code> and <code class="language-plaintext highlighter-rouge">OUT</code> dependent on each other? To fix that, we define a special node called <code class="language-plaintext highlighter-rouge">EXIT</code> whose <code class="language-plaintext highlighter-rouge">IN</code> set is initialized to be empty. This serves as the base case in the recursive equation.</p> <p>To calculate the <code class="language-plaintext highlighter-rouge">IN</code> and <code class="language-plaintext highlighter-rouge">OUT</code> set for each block, we can start from any block, and begin solving the equations for each block in our CFG. We stop when we reach a <em>fixpoint</em> - a round of iteration on the CFG where none of the <code class="language-plaintext highlighter-rouge">IN</code> sets have changed.</p> <p>Let us run through an example of live variable analysis. Consider the CFG below where <code class="language-plaintext highlighter-rouge">BB001</code> has an edge to <code class="language-plaintext highlighter-rouge">BB002</code>, which has an edge to <code class="language-plaintext highlighter-rouge">BB003</code>.</p> <p>For backwards analysis, we usually begin with the last node (<code class="language-plaintext highlighter-rouge">BB003</code> in this example)</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BB001:
+    a = 3; 
+    b = 5;
+    d = 4;
+    x = 100;  
+
+BB002: 
+    c = a + b;
+    d = 2;
+
+BB003: 
+    c = 4;
+    return b * d + c;
+
+    DEF(BB003) = {c}
+    USE(BB003) = {b, d}
+
+    OUT(BB003) = {} [Remember: IN(EXIT) = {}]
+    IN(BB003) = {b, d, c} ∪ ({} - {c}) = {b, d}
+</code></pre></div></div> <p>We then move onto <code class="language-plaintext highlighter-rouge">BB002</code>:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BB001:
+    a = 3; 
+    b = 5;
+    d = 4;
+    x = 100;  
+
+BB002: 
+    c = a + b;
+    d = 2;
+
+    DEF(BB002) = {c, d}
+    USE(BB002) = {a, b}
+
+    OUT(BB003) = {b, d} [from IN(BB003)]
+    IN(BB003) = {a, b} ∪ ({b, d} - {c, d}) = {a, b}
+
+BB003: 
+    c = 4;
+    return b * d + c;
+
+    OUT(BB003) = {}
+    IN(BB003) = {b, d}
+</code></pre></div></div> <p>We then move onto <code class="language-plaintext highlighter-rouge">BB001</code>:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BB001:
+    a = 3; 
+    b = 5;
+    d = 4;
+    x = 100;  
+
+    DEF(BB001) = {a, b, d, x}
+    USE(BB001) = {}
+
+    OUT(BB003) = {a, b} [from IN[BB002]]
+    IN(BB003) = {} ∪ ({a, b} - {a, b, d, x}) = {}
+
+BB002: 
+    c = a + b;
+    d = 2;
+
+    OUT(BB003) = {b, d}
+    IN(BB003) = {a, b}
+
+BB003: 
+    c = 4;
+    return b * d + c;
+
+    OUT(BB003) = {}
+    IN(BB003) = {b, d}
+</code></pre></div></div> <p>Since this CFG is a single chain, we are done. However, if our CFG contained multiple join nodes, we would need to run multiple iterations of equation solving until we reach a fixpoint. These iterations of solving equations is known as iterative dataflow analysis.</p> <p>The <code class="language-plaintext highlighter-rouge">OUT</code> set for <code class="language-plaintext highlighter-rouge">BB001</code> tells us that <code class="language-plaintext highlighter-rouge">d</code> is not alive leaving the block, so our compiler can safely remove the instruction <code class="language-plaintext highlighter-rouge">d = 4</code>.</p> <p>It is important to note that due to the way we have setup the <code class="language-plaintext highlighter-rouge">IN</code> and <code class="language-plaintext highlighter-rouge">OUT</code> equations, we will <em>always</em> reach a fixpoint as the size of the <code class="language-plaintext highlighter-rouge">OUT</code> set can only increase (monotonic non-decreasing), and there is a finite bound to its size (the set of variables in the source code).</p> <p>We can formally prove such properties using dataflow analysis, which I will talk about in the next post. Live variable analysis is an example of a dataflow analysis, which uses <em>backwards</em> iteration and a <em>union</em> meet operator.</p> <p>Disclaimer: I am not an expert in compilers, and just want to share some cool ideas I’ve been learning. If I’ve made an error somewhere, <a href="mailto:sid.narsipur@gmail.com">let me know</a>.</p>]]></content><author><name></name></author><category term="cs"/><summary type="html"><![CDATA[Before we move onto covering dataflow analysis, I thought it would interesting to cover an example of such an analysis to motivate its discussion.]]></summary></entry><entry><title type="html">intro to compiler optimizations (1)</title><link href="https://sidnarsipur.github.io/blog/2025/compiler/" rel="alternate" type="text/html" title="intro to compiler optimizations (1)"/><published>2025-02-26T23:12:00+00:00</published><updated>2025-02-26T23:12:00+00:00</updated><id>https://sidnarsipur.github.io/blog/2025/compiler</id><content type="html" xml:base="https://sidnarsipur.github.io/blog/2025/compiler/"><![CDATA[<p>For most of the <a href="https://evansdata.com/reports/viewRelease.php?reportID=9">30 million</a> software developers in the world, the compiler is a black box - just another command to type out in the terminal. Many new programmers would have never even typed out <code class="language-plaintext highlighter-rouge">gcc</code> or <code class="language-plaintext highlighter-rouge">javac</code> in the terminal and just press the ▶️ button in their IDEs.</p> <p>Understanding how a compiler works can help you write better code, and develop a fresh outlook on software engineering. Nothing is just magic, it’s just mechanical!</p> <h1 id="parsing--lexing">Parsing &amp; Lexing</h1> <p>Setting up the parse tree is the boring part of compilation, but most intro courses only focus on lexing and parsing. Most of the interesting analysis and transformation on source code happens after the creation of an <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">Abstract Syntax Tree (AST)</a>.</p> <p><br/></p> <div align="center"> <img src="https://raw.githubusercontent.com/Codecademy/docs/main/media/abstract-syntax-tree.png" alt="Abstract syntax tree for Euclidean algorithm" width="50%"/> <h6>Credit: Wikimedia Commons</h6> </div> <p><br/></p> <p>The AST is the first of many structures that represent source code as a graph. Representing our code as a graph is a really powerful tool that will help us reason about control flow and the state of our program using formal theorems and properties of graphs (more on this later).</p> <p>This blog will mainly focus on the middle end of the compiler - the part after the AST has been created.</p> <h1 id="intermediate-representation">Intermediate Representation</h1> <p>Once the AST has been created, it is usually lowered into an intermediate representation (IR). There are multiple IRs used in a compiler, with each offering different benefits and drawbacks for analysis.</p> <p>Using an IR allows multiple programming languages to share the same compiler for middle end optimizations and code generation, or combine different front ends and back ends together.</p> <p><br/></p> <div align="center"> <img src="https://liucs.net/cs664s16/compiler-front-back.png" alt="Abstract syntax tree for Euclidean algorithm" width="50%"/> <h6>Credit: https://liucs.net/cs664s16/ir.html</h6> </div> <p><br/></p> <p>IRs simplify code analysis by converting an AST into a linear format, eliminating the need for recursive tree traversal. They may also additional extra information about variable mutation and control flow to help with analysis.</p> <p>In this post we’ll look at two popular IRs - three address code and control flow graphs.</p> <h1 id="three-address-code">Three Address Code</h1> <p>IRs in compilers try to keep simple, and do not support complex data structures or control flow like source code does. One of the most popular IRs is three address code, where each instruction is just an operation upon two operands.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>z = x op y (General form)
 
 z = x + 3
 z = x mod 3
@@ -65,4 +170,4 @@ BB002:
 
 BB003:
     l#0 = 100
-</code></pre></div></div> <p>BB003 in the above example is called a <em>join node</em>, a node with more than incoming edge. Join nodes are harder to reason about, as they indicate that the program could have taken multiple different routes to get there.</p> <p>IRs like SSA form make analysis on join nodes easier to perform by assigning a unique number to each use of a variable, meaning that each variable is only written to once. This allows us to differentiate between the value of y being assigned 10 and the value of y being assigned 20.</p> <p>Edges in CFGs indicate a change in control flow and can help us reason about the state of a program at a particular point. By using powerful properties of graphs, we can reason about code that can be removed or shifted to a different block to speed up the program. The structure such transformations rely on is called dataflow analysis, which will be the topic of the next blog post.</p> <p>Thank you for reading!</p> <p>Discalimer: I am not an expert in compilers, and just want to share some cool ideas I’ve been learning. If I’ve made an error somewhere, <a href="mailto:sid.narsipur@gmail.com">let me know</a>.</p>]]></content><author><name></name></author><category term="cs"/><summary type="html"><![CDATA[For most of the 30 million software developers in the world, the compiler is a black box - just another command to type out in the terminal. Many new programmers would have never even typed out gcc or javac in the terminal and just press the ▶️ button in their IDEs.]]></summary></entry></feed>
+</code></pre></div></div> <p>BB003 in the above example is called a <em>join node</em>, a node with more than incoming edge. Join nodes are harder to reason about, as they indicate that the program could have taken multiple different routes to get there.</p> <p>IRs like SSA form make analysis on join nodes easier to perform by assigning a unique number to each use of a variable, meaning that each variable is only written to once. This allows us to differentiate between the value of y being assigned 10 and the value of y being assigned 20.</p> <p>Edges in CFGs indicate a change in control flow and can help us reason about the state of a program at a particular point. By using powerful properties of graphs, we can reason about code that can be removed or shifted to a different block to speed up the program. The structure such transformations rely on is called dataflow analysis, which will be the topic of the next few blog posts.</p> <p>Thank you for reading!</p> <p>Disclaimer: I am not an expert in compilers, and just want to share some cool ideas I’ve been learning. If I’ve made an error somewhere, <a href="mailto:sid.narsipur@gmail.com">let me know</a>.</p>]]></content><author><name></name></author><category term="cs"/><summary type="html"><![CDATA[For most of the 30 million software developers in the world, the compiler is a black box - just another command to type out in the terminal. Many new programmers would have never even typed out gcc or javac in the terminal and just press the ▶️ button in their IDEs.]]></summary></entry></feed>

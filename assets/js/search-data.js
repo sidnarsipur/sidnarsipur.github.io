@@ -30,7 +30,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/resume/";
           },
-        },{id: "post-intro-to-compiler-optimizations-1",
+        },{id: "post-intro-to-compiler-optimizations-2",
+      
+        title: "intro to compiler optimizations (2)",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/compiler2/";
+        
+      },
+    },{id: "post-intro-to-compiler-optimizations-1",
       
         title: "intro to compiler optimizations (1)",
       
