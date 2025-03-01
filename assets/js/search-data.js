@@ -41,9 +41,9 @@ ninja.data = [{
           window.location.href = "/blog/2025/compiler2/";
         
       },
-    },{id: "post-intro-to-compiler-optimizations-1",
+    },{id: "post-compiler-optimizations-1",
       
-        title: "intro to compiler optimizations (1)",
+        title: "compiler optimizations (1)",
       
       description: "",
       section: "Posts",
