@@ -4,77 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siddharth Narsipur</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-            padding: 40px;
-            margin: 0;
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-        img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
-        .content {
-            flex: 1;
-        }
-        h1 {
-            font-size: 48px;
-            font-weight: 400;
-            margin: 0 0 15px 0;
-        }
-        p {
-            font-size: 15px;
-            margin: 0 0 15px 0;
-            line-height: 1.6;
-            color: #333;
-        }
-        .links {
-            display: flex;
-            gap: 20px;
-        }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-            font-size: 15px;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        h2 {
-            font-size: 20px;
-            font-weight: 400;
-            margin: 40px 0 20px 0;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-        .experience {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        .bullet {
-            margin-top: 8px;
-            font-size: 15px;
-            color: #555;
-            line-height: 1.6;
-            font-style: italic;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <img src="photo.webp" alt="Siddharth Narsipur">
-    <div class="content">
+    <div class="container">
+        <img src="photo.webp" alt="Siddharth Narsipur" class="profile-img">
+        <div class="content">
         <h1>Siddharth Narsipur</h1>
         <p>Senior at the University of Rochester passionate about backend development, computer systems and AI.</p>
-        <div style="font-size: 15px;">Email: <a href="mailto:sid.narsipur@gmail.com">sid.narsipur@gmail.com</a></div>
-        <br>
+        <p style="font-size: 0.95rem; margin-top: -16px;">Email: <a href="mailto:sid.narsipur@gmail.com">sid.narsipur@gmail.com</a></p>
+        
         <div class="links">
             <a href="https://github.com/sidnarsipur">GitHub</a>
             <a href="https://www.linkedin.com/in/sid-narsipur/">LinkedIn</a>
@@ -83,80 +22,31 @@
         
         <h2>Experience</h2>
         <div class="experience">
-            Software Engineering Intern, <a href="https://www.americanexpress.com/">American Express</a> (Summer 2025)
+            <div class="experience-header">Software Engineering Intern, <a href="https://www.americanexpress.com/">American Express</a> (Summer 2025)</div>
             <div class="bullet">
             Built scalable tools in Golang to accelerate and automate Terraform module development
             </div>
         </div>
         <div class="experience">
-            Research Assistant, <a href="https://rochester-bear-lab.github.io/">URCS Bear Lab</a> (May 2024 - May 2025)
+            <div class="experience-header">Research Assistant, <a href="https://rochester-bear-lab.github.io/">URCS Bear Lab</a> (May 2024 - May 2025)</div>
             <div class="bullet">
-            Conducted research on generating unified Mixed Reality interfaces for multiple enivironments at once
+            Conducted research on generating unified Mixed Reality interfaces for multiple environments at once
             </div>
         </div>
         <div class="experience">
-            Software Engineer Intern, <a href="https://www.liquidonate.com//">LiquiDonate</a> (Summer 2023)
+            <div class="experience-header">Software Engineer Intern, <a href="https://www.liquidonate.com//">LiquiDonate</a> (Summer 2023)</div>
             <div class="bullet">
             Developed APIs to match and ship excess goods from large retailers to nonprofits around the US
             </div>
         </div>
 
-        <h2>Projects</h2>
-        <div class="experience">
-            <a href="https://github.com/sidnarsipur?tab=repositories">Netherite</a>
-            <div class="bullet">
-            AI-powered Github for Notes. Winner, Dandyhacks 2024
-            </div>
-        </div>
-        <div class="experience">
-           <a href="https://github.com/sidnarsipur/GroupForGood">Group4Good</a>
-            <div class="bullet">
-            Find common interests among large groups with semantic reasoning
-            </div>
-        </div>
-        <div class="experience">
-           <a href="https://github.com/sidnarsipur/TextGen">TextGen</a>
-            <div class="bullet">
-            A group of vision models that generate textures from photographs                
-            </div>
-        </div>
-        <div class="experience">
-           <a href="https://github.com/sidnarsipur/SHFS">SHFS</a>
-            <div class="bullet">
-            A distributed gRPC-powered file system                
-            </div>
-        </div>
-        <div class="experience">
-            <a href="https://github.com/sidnarsipur/Blockzilla">Blockzilla</a>
-            <div class="bullet">
-            Parental controls as easy as natural language
-            </div>
-        </div>
-        <div class="experience"><a href="https://github.com/sidnarsipur">More</a></div>
-
-        <h2>Fun</h2>
-        
-        <div class="experience">
-            <a href="https://sidnarsipur.github.io/Dazed-and-Confused">Dazed & Confused</a>
-            <div class="bullet">
-            Choose your adventure game in Twine
-            </div>
+        <h2>Explore</h2>
+        <div class="links">
+            <a href="projects.html">Projects</a>
+            <a href="fun.html">Fun & Interests</a>
         </div>
 
-        <div class="experience">
-            <a href="https://drive.google.com/drive/folders/1UQFmJS4a7oSArSZELf3y3oFVnb68cP5j?usp=sharing">Photography</a>
-            <div class="bullet">
-            Various pics across the years
-            </div>
         </div>
-
-        <div class="experience">
-            <a href="https://podcasts.apple.com/us/podcast/the-indian-opinion/id1531017246">The Indian Opinion</a>
-            <div class="bullet">
-            Football podcast I recorded in high school
-            </div>
-        </div>
-
     </div>
 </body>
 </html>
